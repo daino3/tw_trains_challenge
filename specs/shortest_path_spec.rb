@@ -33,4 +33,25 @@ describe 'ShortestPath' do
     end
   end
 
+  describe '#find_min_dist' do
+    it 'should return the least non-nil distance value of the queue' do
+      expect(shortest.find_min_dist).to eq(0)
+    end
+  end
+
+  describe '#find_all_distances' do
+    it 'should set the distances of the adjacent towns' do
+      shortest.find_all_distances
+      distances = shortest.final_queue.values.map { |dist_data| dist_data[:distance] }
+      expect(distances.all? {|element| element.is_a?(Integer)}).to be_true
+    end
+
+    it 'returns shortest possible distances' do
+      shortest.find_all_distances
+      distances = shortest.final_queue.values.map { |dist_data| dist_data[:distance] }
+      expect(distances.all? {|element| element.is_a?(Integer)}).to be_true
+    end
+  end
+
+
 end

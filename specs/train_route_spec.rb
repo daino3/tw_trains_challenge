@@ -21,4 +21,10 @@ describe 'TrainRoute' do
     end
   end
 
+  describe '#travel' do 
+    it 'adds the distances between nodes' do
+      expect(route.travel(*[A, B])).to eq(15)
+    end
+  end
+
 end

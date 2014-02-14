@@ -7,7 +7,7 @@ class Town
   end
 
   def adjacent_towns
-    @adj_towns.values.compact
+    @adj_towns.keys.compact
   end
 
 end
