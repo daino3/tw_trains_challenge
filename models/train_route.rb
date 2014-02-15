@@ -19,9 +19,22 @@ class TrainRoute
   end
 
   def travel(*args)
-    build_graph(*args).each do |start, travel_options|
-      binding.pry
+    graph = build_graph(*args)
+    stops = graph.keys
+    distances = []
+    stops.each_with_index do |town, index|
+      if index + 1 < stops.length
+        next_stop = stops[index+1]
+        distances << graph[town][next_stop]
+      end
     end
+    return 'NO SUCH ROUTE' if distances.include?(nil) 
+    distances.inject(:+)
+  end
+
+  def shortest_route(start, finish)
+    path = ShortestPath.new(self, start, finish)
+    path.shortest_distance
   end
 
   def build_graph(*towns)

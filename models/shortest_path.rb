@@ -20,6 +20,13 @@ class ShortestPath
     @final_queue
   end
 
+  def shortest_distance
+    find_all_distances
+    @final_queue[@finish.letter][:distance]
+  end
+
+  private 
+
   def set_values(minimum)
     @queue.each do |town, dist_data|
       if @queue.count == 1
@@ -34,11 +41,17 @@ class ShortestPath
 
   def set_adj_town_dist(town) 
     @graph[town].each do |adj_town, distance|
-      old_dist = @queue[town][:distance]
-      new_dist = @graph[town][adj_town]
+      # if we've already established a shortest distance for an adj node, we need to break out of the loop 
+      break if @queue[adj_town] == nil
 
-      if @queue[adj_town] != nil
-        @queue[adj_town][:distance]  = old_dist + new_dist
+      node_dist     = @queue[town][:distance]
+      adj_node_dist = @graph[town][adj_town]
+      total_dist    = node_dist + adj_node_dist
+
+      current_dist  = @queue[adj_town][:distance]
+
+      if current_dist.nil? || total_dist < current_dist 
+        @queue[adj_town][:distance]  = total_dist
         @queue[adj_town][:prev_node] = town
       end
     end 
@@ -61,8 +74,6 @@ class ShortestPath
       dist_data[:distance]
     end.compact.min
   end
-
-  private
 
   def initial_dist(town)
     @start.letter == town.letter ? 0 : nil
